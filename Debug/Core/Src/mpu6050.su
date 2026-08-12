@@ -1,0 +1,8 @@
+../Core/Src/mpu6050.c:28:20:MPU6050_Writebyte	32	static
+../Core/Src/mpu6050.c:33:20:MPU6050_Writebytes	32	static
+../Core/Src/mpu6050.c:39:20:MPU6050_Readbyte	32	static
+../Core/Src/mpu6050.c:44:20:MPU6050_Readbytes	32	static
+../Core/Src/mpu6050.c:49:6:mpu6050_init	16	static
+../Core/Src/mpu6050.c:100:6:calibrate_gyro	56	static
+../Core/Src/mpu6050.c:122:6:calibrate_ACC	48	static
+../Core/Src/mpu6050.c:141:6:MPU6050_Read_All	40	static
