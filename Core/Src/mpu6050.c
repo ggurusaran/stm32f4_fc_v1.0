@@ -99,11 +99,12 @@ void mpu6050_init()
 
 bool calibrate_gyro(IMU_Data_t *imu)
 {
+	int i;
 	double sumX=0;
 	double sumY=0;
 	double sumZ=0;
 	float sumTemp=0;
-	for(int i=0; i<2000; i++)
+	for(i=0; i<2000; i++)
 	{
 		MPU6050_Read_All(imu);
 		sumX += imu->gyro_x_raw;
@@ -120,10 +121,11 @@ bool calibrate_gyro(IMU_Data_t *imu)
 
 bool calibrate_ACC(IMU_Data_t *imu)
 {
+	int i;
 	double summationRoll=0;
 	double summationPitch=0;
 	double summation_Z=0;
-	for(int i=0; i<2000; i++)
+	for(i=0; i<2000; i++)
 	{
 		MPU6050_Read_All(imu);
 		summationRoll += imu->acc_x;

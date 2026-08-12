@@ -26,13 +26,13 @@ void Controller_Update(FlightController_t *fc)
     float desiredRollRate =
         PID_Update(&fc->rollAnglePID,
                    fc->rc_cmd.roll,
-                   fc->altitude.roll,
+                   fc->altitude.angle_roll,
                    0.004);
 
     float desiredPitchRate =
         PID_Update(&fc->pitchAnglePID,
                    fc->rc_cmd.pitch,
-                   fc->altitude.pitch,
+                   fc->altitude.angle_pitch,
                    0.004);
 
     /* Inner loop */
@@ -59,16 +59,16 @@ void Controller_Update(FlightController_t *fc)
 void Motor_mix(FlightController_t *fc)
 {
 	fc->motors[0].pwm = fc->rc_cmd.throttle - fc->rollOutput - fc->pitchOutput - fc->yawOutput;
-	fc->motors[1].pwm = fc->rc_cmd.throttle - fc->rollOutput + fc->pitchOutput + fc->yawOutput;
+	fc->motors[1].pwm = fc->rc_cmd.throttle + fc->rollOutput - fc->pitchOutput + fc->yawOutput;
 	fc->motors[2].pwm = fc->rc_cmd.throttle + fc->rollOutput + fc->pitchOutput - fc->yawOutput;
-	fc->motors[3].pwm = fc->rc_cmd.throttle + fc->rollOutput - fc->pitchOutput + fc->yawOutput;
+	fc->motors[3].pwm = fc->rc_cmd.throttle - fc->rollOutput + fc->pitchOutput + fc->yawOutput;
 
 	for(int i=0; i<4; i++)
 	{
-		if(fc->motors[i]> MOTOR_MAX_PWM)
-			fc->motors[i]= MOTOR_MAX_PWM;
-		if(fc->motors[i] < MOTOR_MIN_PWM)
-			fc->motors[i]= MOTOR_MIN_PWM;
+		if(fc->motors[i].pwm> MOTOR_MAX_PWM)
+			fc->motors[i].pwm= MOTOR_MAX_PWM;
+		if(fc->motors[i].pwm < MOTOR_MIN_PWM)
+			fc->motors[i].pwm= MOTOR_MIN_PWM;
 	}
 }
 
