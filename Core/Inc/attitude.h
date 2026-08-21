@@ -5,8 +5,8 @@
  *      Author: gurus
  */
 
-#ifndef INC_ALTITUDE_H_
-#define INC_ALTITUDE_H_
+#ifndef INC_ATTITUDE_H_
+#define INC_ATTITUDE_H_
 
 #define DEG_TO_RAD  (3.14159265f / 180.0f)
 #define RAD_TO_DEG  (180.0f / 3.14159265f)
@@ -22,11 +22,11 @@ typedef struct
 	float angle_roll;
 	float angle_pitch;
 	float angle_yaw;
-}Altitude_t;
+}Attitude_t;
 
 void kalmanfilter(float *State, float *Uncertainty, float Input, float Measurement, float dt);
-void Altitude_Update(IMU_Data_t *imu, Altitude_t *attitude, float dt);
+void Attitude_Update(IMU_Data_t *imu, Attitude_t *attitude, float dt);
 
 
 
-#endif /* INC_ALTITUDE_H_ */
+#endif /* INC_ATTITUDE_H_ */

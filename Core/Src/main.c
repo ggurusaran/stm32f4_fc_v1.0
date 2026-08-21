@@ -46,8 +46,8 @@
 /* USER CODE BEGIN PM */
 #define QUADX
 #define RC_PULSE_MIN_US   1150  //for simonk esc's(30A) to avoid motor delay when starting the drone
-#define RC_PULSE_MAX_US   2100
-#define MINCOMMAND	  1000
+#define RC_PULSE_MAX_US   2000
+#define MINCOMMAND	      1000
 
 #define dt  		(0.01)
 #define COMP_FILT_ALPHA       0.05000000f
@@ -64,6 +64,7 @@ TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim4;
 TIM_HandleTypeDef htim5;
+TIM_HandleTypeDef htim6;
 
 UART_HandleTypeDef huart2;
 
@@ -87,6 +88,7 @@ static void MX_TIM2_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_TIM4_Init(void);
 static void MX_TIM5_Init(void);
+static void MX_TIM6_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -128,21 +130,31 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
     switch ((uint32_t)htim->Instance)
     {
         case (uint32_t)TIM2:
-        		fc.rc_rawvalues.roll = width;
+        		fc.rawPWM.roll = width;
             break;
         case (uint32_t)TIM3:
-        		fc.rc_rawvalues.pitch = width;
+        		fc.rawPWM.pitch = width;
             break;
         case (uint32_t)TIM4:
-        		fc.rc_rawvalues.throttle = width;
+        		fc.rawPWM.throttle = width;
             break;
         case (uint32_t)TIM5:
-        		fc.rc_rawvalues.yaw = width;
+        		fc.rawPWM.yaw = width;
             break;
         default:
             break;
     }
 }
+
+/* This function executes exactly every 1ms when TIM6 overflows */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+    if (htim->Instance == TIM6)
+    {
+        Scheduler_Tick();
+    }
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -182,12 +194,16 @@ int main(void)
   MX_TIM3_Init();
   MX_TIM4_Init();
   MX_TIM5_Init();
+  MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
 
 
   Motor_PWM_Start();
   mpu6050_init();
-  Controller_Init(&fc);
+  //imu calibration
+  //calibrate_ACC(&imu);
+ // calibrate_gyro(&imu);
+  //Controller_Init(&fc);
   RC_InputCapture_Start();
   printf("System started!\r\n");
   /* USER CODE END 2 */
@@ -197,13 +213,18 @@ int main(void)
 
 while (1)
 {
-	MPU6050_Read_All(&imu);
+//	RC_Process(&fc.rawPWM, &fc.rc_cmd);
+//	MPU6050_Read_All(&imu);                 //computes angular vel in x,y,z dir
+//	Attitude_Update(&imu, &fc.attitude, dt);  //computes roll,pitch, and yaw
+//
+//	printf("Roll: %f, pitch: %f, Yaw: %f\r\n", fc.attitude.angle_roll, fc.attitude.angle_pitch, fc.attitude.angle_yaw);
+//
+//  	Controller_Update(&fc);
+// 	Motor_mix(&fc);
+	//Motor_Write(fc.motors);
+	//printf("M1: %.2f, M2: %.2f, M3: %.2f, M4:%.2f\r\n", fc.rawPWM.throttle,fc.rawPWM.roll, fc.rawPWM.pitch, fc.rawPWM.yaw);
 
-	RC_Process(&fc.rc_rawvalues, &fc.rc_cmd);
-	Controller_Update(&fc);
-	Motor_mix(&fc);
-	Motor_Write(fc.motors);
-
+	HAL_Delay(500);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -706,6 +727,44 @@ static void MX_TIM5_Init(void)
   /* USER CODE BEGIN TIM5_Init 2 */
 
   /* USER CODE END TIM5_Init 2 */
+
+}
+
+/**
+  * @brief TIM6 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM6_Init(void)
+{
+
+  /* USER CODE BEGIN TIM6_Init 0 */
+
+  /* USER CODE END TIM6_Init 0 */
+
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM6_Init 1 */
+
+  /* USER CODE END TIM6_Init 1 */
+  htim6.Instance = TIM6;
+  htim6.Init.Prescaler = 83;
+  htim6.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim6.Init.Period = 999;
+  htim6.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim6) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim6, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM6_Init 2 */
+
+  /* USER CODE END TIM6_Init 2 */
 
 }
 

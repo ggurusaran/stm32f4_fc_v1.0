@@ -1,3 +1,4 @@
 ../Core/Src/flight_controller.c:12:6:Controller_Init	16	static
-../Core/Src/flight_controller.c:23:6:Controller_Update	24	static
-../Core/Src/flight_controller.c:59:6:Motor_mix	24	static
+../Core/Src/flight_controller.c:23:6:pid_outer_loop	16	static
+../Core/Src/flight_controller.c:39:6:pid_inner_loop	16	static
+../Core/Src/flight_controller.c:62:6:Motor_mix	24	static

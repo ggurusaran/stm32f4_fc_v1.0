@@ -23,40 +23,56 @@ void PID_Init(PID_t *pid, float Kp, float Ki, float Kd, float out_min, float out
 	pid->out_min = out_min; pid->out_max = out_max;
 }
 
-float PID_Update(PID_t *pid, float setpoint, float measurement ,float dt)
+float PID_Update(PID_t *pid,
+                 float setpoint,
+                 float measurement,
+                 float dt)
 {
-	float error = setpoint - measurement;
+    float error = setpoint - measurement;
 
-	float PTerm = pid->kp * error;
-	pid->integral = (pid->kp * error);
-	float ITerm = pid->ki * pid->integral;
-	if(ITerm>400)
-	{
-		ITerm = 400;
-	}
-	else if(ITerm<-400)
-	{
-		ITerm = -400;
-	}
-	float DTerm = pid->kd * (error - pid->previousError) / dt;
-	pid->previousError = error;
-	float output = PTerm + ITerm + DTerm;
+    float PTerm = pid->kp * error;
 
-	if (output > pid->out_max)
-	{
-		output = pid->out_max;
-        pid->integral -= error * dt;   // undo this step's accumulation
-    }
-	else if (output < pid->out_min)
-	{
-	    output = pid->out_min;
-	    pid->integral -= error * dt;
-	}
-	return output;
+    /*
+     * Calculate derivative
+     */
+    float derivative = (error - pid->previousError) / dt;
+
+    float DTerm = -pid->kd * derivative;
+
+    /*
+     * Candidate integral
+     */
+    float newIntegral =
+        pid->integral + error * dt;
+
+    float ITerm = pid->ki * newIntegral;
+
+
+    if (ITerm > 400.0f)
+        ITerm = 400.0f;
+    else if (ITerm < -400.0f)
+        ITerm = -400.0f;
+
+    float output = PTerm + ITerm + DTerm;
+
+    if (output > pid->out_max)
+        output = pid->out_max;
+    else if (output < pid->out_min)
+        output = pid->out_min;
+    else
+        pid->integral = newIntegral;
+
+    pid->previousError = error;
+
+    return output;
 }
 
-
-
+void PID_Reset(PID_t *pid)
+{
+	pid->kp=0;
+	pid->ki=0;
+	pid->kd=0;
+}
 
 
 

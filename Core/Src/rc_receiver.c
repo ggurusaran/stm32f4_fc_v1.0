@@ -17,18 +17,18 @@
 #define MAX_YAW_RATE     180.0f   // deg/s
 #define RC_DEADBAND      20.0f    // us
 
-void RC_Process(const RC_Input_t *raw, RC_Command_t *cmd)
+void RC_Process(const RC_Input_t *rawPWM, RC_Command_t *cmd)
 {
     /* Throttle: 1000-2000 us -> 0.0-1.0 */
-    cmd->throttle = (raw->throttle - RC_MIN) / (RC_MAX - RC_MIN);
+    cmd->throttle = (rawPWM->throttle - RC_MIN) / (RC_MAX - RC_MIN);
 
     /* Roll/Pitch: 1000-2000 us -> -30° to +30° */
-    cmd->roll  = ((raw->roll - RC_CENTER) / 500.0f) * MAX_ROLL_ANGLE;
+    cmd->roll  = ((rawPWM->roll - RC_CENTER) / 500.0f) * MAX_ROLL_ANGLE;
 
-    cmd->pitch = ((raw->pitch - RC_CENTER) / 500.0f) * MAX_PITCH_ANGLE;
+    cmd->pitch = ((rawPWM->pitch - RC_CENTER) / 500.0f) * MAX_PITCH_ANGLE;
 
     /* Yaw: 1000-2000 us -> -180 to +180 deg/s */
-    cmd->yaw   = ((raw->yaw - RC_CENTER) / 500.0f) * MAX_YAW_RATE;
+    cmd->yaw   = ((rawPWM->yaw - RC_CENTER) / 500.0f) * MAX_YAW_RATE;
 
 }
 

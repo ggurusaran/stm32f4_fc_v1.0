@@ -8,6 +8,8 @@
 #ifndef INC_TIMER_H_
 #define INC_TIMER_H_
 
+#include <rc_receiver.h>
+
 void Motor_PWM_Start(void);
 void RC_InputCapture_Start(void);
 

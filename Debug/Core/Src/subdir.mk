@@ -5,14 +5,16 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Core/Src/altitude.c \
+../Core/Src/attitude.c \
 ../Core/Src/bmp280.c \
+../Core/Src/events.c \
 ../Core/Src/flight_controller.c \
 ../Core/Src/main.c \
 ../Core/Src/motor.c \
 ../Core/Src/mpu6050.c \
 ../Core/Src/pid_control.c \
 ../Core/Src/rc_receiver.c \
+../Core/Src/scheduler.c \
 ../Core/Src/stm32f4xx_hal_msp.c \
 ../Core/Src/stm32f4xx_it.c \
 ../Core/Src/syscalls.c \
@@ -21,14 +23,16 @@ C_SRCS += \
 ../Core/Src/timer.c 
 
 OBJS += \
-./Core/Src/altitude.o \
+./Core/Src/attitude.o \
 ./Core/Src/bmp280.o \
+./Core/Src/events.o \
 ./Core/Src/flight_controller.o \
 ./Core/Src/main.o \
 ./Core/Src/motor.o \
 ./Core/Src/mpu6050.o \
 ./Core/Src/pid_control.o \
 ./Core/Src/rc_receiver.o \
+./Core/Src/scheduler.o \
 ./Core/Src/stm32f4xx_hal_msp.o \
 ./Core/Src/stm32f4xx_it.o \
 ./Core/Src/syscalls.o \
@@ -37,14 +41,16 @@ OBJS += \
 ./Core/Src/timer.o 
 
 C_DEPS += \
-./Core/Src/altitude.d \
+./Core/Src/attitude.d \
 ./Core/Src/bmp280.d \
+./Core/Src/events.d \
 ./Core/Src/flight_controller.d \
 ./Core/Src/main.d \
 ./Core/Src/motor.d \
 ./Core/Src/mpu6050.d \
 ./Core/Src/pid_control.d \
 ./Core/Src/rc_receiver.d \
+./Core/Src/scheduler.d \
 ./Core/Src/stm32f4xx_hal_msp.d \
 ./Core/Src/stm32f4xx_it.d \
 ./Core/Src/syscalls.d \
@@ -60,7 +66,7 @@ Core/Src/%.o Core/Src/%.su Core/Src/%.cyclo: ../Core/Src/%.c Core/Src/subdir.mk
 clean: clean-Core-2f-Src
 
 clean-Core-2f-Src:
-	-$(RM) ./Core/Src/altitude.cyclo ./Core/Src/altitude.d ./Core/Src/altitude.o ./Core/Src/altitude.su ./Core/Src/bmp280.cyclo ./Core/Src/bmp280.d ./Core/Src/bmp280.o ./Core/Src/bmp280.su ./Core/Src/flight_controller.cyclo ./Core/Src/flight_controller.d ./Core/Src/flight_controller.o ./Core/Src/flight_controller.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/motor.cyclo ./Core/Src/motor.d ./Core/Src/motor.o ./Core/Src/motor.su ./Core/Src/mpu6050.cyclo ./Core/Src/mpu6050.d ./Core/Src/mpu6050.o ./Core/Src/mpu6050.su ./Core/Src/pid_control.cyclo ./Core/Src/pid_control.d ./Core/Src/pid_control.o ./Core/Src/pid_control.su ./Core/Src/rc_receiver.cyclo ./Core/Src/rc_receiver.d ./Core/Src/rc_receiver.o ./Core/Src/rc_receiver.su ./Core/Src/stm32f4xx_hal_msp.cyclo ./Core/Src/stm32f4xx_hal_msp.d ./Core/Src/stm32f4xx_hal_msp.o ./Core/Src/stm32f4xx_hal_msp.su ./Core/Src/stm32f4xx_it.cyclo ./Core/Src/stm32f4xx_it.d ./Core/Src/stm32f4xx_it.o ./Core/Src/stm32f4xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32f4xx.cyclo ./Core/Src/system_stm32f4xx.d ./Core/Src/system_stm32f4xx.o ./Core/Src/system_stm32f4xx.su ./Core/Src/timer.cyclo ./Core/Src/timer.d ./Core/Src/timer.o ./Core/Src/timer.su
+	-$(RM) ./Core/Src/attitude.cyclo ./Core/Src/attitude.d ./Core/Src/attitude.o ./Core/Src/attitude.su ./Core/Src/bmp280.cyclo ./Core/Src/bmp280.d ./Core/Src/bmp280.o ./Core/Src/bmp280.su ./Core/Src/events.cyclo ./Core/Src/events.d ./Core/Src/events.o ./Core/Src/events.su ./Core/Src/flight_controller.cyclo ./Core/Src/flight_controller.d ./Core/Src/flight_controller.o ./Core/Src/flight_controller.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/motor.cyclo ./Core/Src/motor.d ./Core/Src/motor.o ./Core/Src/motor.su ./Core/Src/mpu6050.cyclo ./Core/Src/mpu6050.d ./Core/Src/mpu6050.o ./Core/Src/mpu6050.su ./Core/Src/pid_control.cyclo ./Core/Src/pid_control.d ./Core/Src/pid_control.o ./Core/Src/pid_control.su ./Core/Src/rc_receiver.cyclo ./Core/Src/rc_receiver.d ./Core/Src/rc_receiver.o ./Core/Src/rc_receiver.su ./Core/Src/scheduler.cyclo ./Core/Src/scheduler.d ./Core/Src/scheduler.o ./Core/Src/scheduler.su ./Core/Src/stm32f4xx_hal_msp.cyclo ./Core/Src/stm32f4xx_hal_msp.d ./Core/Src/stm32f4xx_hal_msp.o ./Core/Src/stm32f4xx_hal_msp.su ./Core/Src/stm32f4xx_it.cyclo ./Core/Src/stm32f4xx_it.d ./Core/Src/stm32f4xx_it.o ./Core/Src/stm32f4xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32f4xx.cyclo ./Core/Src/system_stm32f4xx.d ./Core/Src/system_stm32f4xx.o ./Core/Src/system_stm32f4xx.su ./Core/Src/timer.cyclo ./Core/Src/timer.d ./Core/Src/timer.o ./Core/Src/timer.su
 
 .PHONY: clean-Core-2f-Src
 

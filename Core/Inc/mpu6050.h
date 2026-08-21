@@ -9,6 +9,7 @@
 #define INC_MPU6050_H_
 
 #include "main.h"
+#include <stdbool.h>
 
 typedef struct _MPU6050
 {
@@ -75,6 +76,8 @@ HAL_StatusTypeDef  MPU6050_Readbyte(uint8_t reg_addr, uint8_t* data);
 HAL_StatusTypeDef  MPU6050_Readbytes(uint8_t reg_addr, uint8_t len, uint8_t* data);
 
 void mpu6050_init();
+bool calibrate_gyro(IMU_Data_t *imu);
+bool calibrate_ACC(IMU_Data_t *imu);
 void MPU6050_Read_All(IMU_Data_t *imu);
 void kalmanfilter(float *State, float *Uncertainty, float Input, float Measurement, float dt);
 #endif /* INC_MPU6050_H_ */

@@ -20,31 +20,34 @@ void Controller_Init(FlightController_t *fc)
 }
 
 //Compute PID for Roll, pitch, yaw
-void Controller_Update(FlightController_t *fc)
+void pid_outer_loop(FlightController_t *fc)
 {
     /* Outer loop */
-    float desiredRollRate =
+    fc->desiredRollRate  =
         PID_Update(&fc->rollAnglePID,
                    fc->rc_cmd.roll,
-                   fc->altitude.angle_roll,
+                   fc->attitude.angle_roll,
                    0.004);
 
-    float desiredPitchRate =
+    fc->desiredPitchRate =
         PID_Update(&fc->pitchAnglePID,
                    fc->rc_cmd.pitch,
-                   fc->altitude.angle_pitch,
+                   fc->attitude.angle_pitch,
                    0.004);
+}
 
+void pid_inner_loop(FlightController_t *fc)
+{
     /* Inner loop */
     fc->rollOutput =
         PID_Update(&fc->rollRatePID,
-                   desiredRollRate,
+                   fc->desiredRollRate,
                    fc->imu.gyro_x,
                    0.001);
 
     fc->pitchOutput =
         PID_Update(&fc->pitchRatePID,
-                   desiredPitchRate,
+                   fc->desiredPitchRate,
                    fc->imu.gyro_y,
                    0.001);
 
@@ -58,10 +61,10 @@ void Controller_Update(FlightController_t *fc)
 
 void Motor_mix(FlightController_t *fc)
 {
-	fc->motors[0].pwm = fc->rc_cmd.throttle - fc->rollOutput - fc->pitchOutput - fc->yawOutput;
-	fc->motors[1].pwm = fc->rc_cmd.throttle + fc->rollOutput - fc->pitchOutput + fc->yawOutput;
-	fc->motors[2].pwm = fc->rc_cmd.throttle + fc->rollOutput + fc->pitchOutput - fc->yawOutput;
-	fc->motors[3].pwm = fc->rc_cmd.throttle - fc->rollOutput + fc->pitchOutput + fc->yawOutput;
+	fc->motors[0].pwm = (1000.0f + (fc->rc_cmd.throttle*1000.0f)) - fc->rollOutput - fc->pitchOutput - fc->yawOutput;
+	fc->motors[1].pwm = (1000.0f + (fc->rc_cmd.throttle*1000.0f)) + fc->rollOutput - fc->pitchOutput + fc->yawOutput;
+	fc->motors[2].pwm = (1000.0f + (fc->rc_cmd.throttle*1000.0f)) + fc->rollOutput + fc->pitchOutput - fc->yawOutput;
+	fc->motors[3].pwm = (1000.0f + (fc->rc_cmd.throttle*1000.0f)) - fc->rollOutput + fc->pitchOutput + fc->yawOutput;
 
 	for(int i=0; i<4; i++)
 	{

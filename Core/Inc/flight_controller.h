@@ -8,12 +8,12 @@
 #ifndef INC_FLIGHT_CONTROLLER_H_
 #define INC_FLIGHT_CONTROLLER_H_
 
+#include <attitude.h>
 #include <math.h>
 #include <motor.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <mpu6050.h>
-#include <altitude.h>
 #include <pid_control.h>
 #include <bmp280.h>
 #include <mpu6050.h>
@@ -46,11 +46,12 @@
 #define MOTOR_MIN_PWM    1150.0f
 
 
+
 typedef struct
 {
     IMU_Data_t imu;
-    Altitude_t altitude;
-    RC_Input_t rc_rawvalues;
+    Attitude_t attitude;
+    RC_Input_t rawPWM;
     RC_Command_t rc_cmd;
 
     PID_t rollAnglePID;
@@ -64,12 +65,16 @@ typedef struct
     float pitchOutput;
     float yawOutput;
 
+    float desiredRollRate;
+    float desiredPitchRate;
+
     Motor_t motors[4];
 
 } FlightController_t;
 
 void Controller_Init(FlightController_t *fc);
-void Controller_Update(FlightController_t *fc);
+void pid_outer_loop(FlightController_t *fc);
+void pid_inner_loop(FlightController_t *fc);
 void Motor_mix(FlightController_t *fc);
 
 

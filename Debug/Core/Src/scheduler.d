@@ -1,4 +1,6 @@
-Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
+Core/Src/scheduler.o: ../Core/Src/scheduler.c \
+ ../Core/Inc/flight_controller.h ../Core/Inc/attitude.h \
+ ../Core/Inc/mpu6050.h ../Core/Inc/main.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  ../Core/Inc/stm32f4xx_hal_conf.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
@@ -29,11 +31,12 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
- ../Core/Inc/timer.h ../Core/Inc/rc_receiver.h ../Core/Inc/mpu6050.h \
- ../Core/Inc/main.h ../Core/Inc/bmp280.h \
+ ../Core/Inc/motor.h ../Core/Inc/pid_control.h ../Core/Inc/bmp280.h \
  ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f446xx.h \
- ../Core/Inc/flight_controller.h ../Core/Inc/attitude.h \
- ../Core/Inc/motor.h ../Core/Inc/pid_control.h
+ ../Core/Inc/rc_receiver.h ../Core/Inc/scheduler.h ../Core/Inc/events.h
+../Core/Inc/flight_controller.h:
+../Core/Inc/attitude.h:
+../Core/Inc/mpu6050.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
@@ -65,13 +68,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
-../Core/Inc/timer.h:
-../Core/Inc/rc_receiver.h:
-../Core/Inc/mpu6050.h:
-../Core/Inc/main.h:
-../Core/Inc/bmp280.h:
-../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f446xx.h:
-../Core/Inc/flight_controller.h:
-../Core/Inc/attitude.h:
 ../Core/Inc/motor.h:
 ../Core/Inc/pid_control.h:
+../Core/Inc/bmp280.h:
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f446xx.h:
+../Core/Inc/rc_receiver.h:
+../Core/Inc/scheduler.h:
+../Core/Inc/events.h:
